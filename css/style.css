@@ -1,15 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
 /* === ANIMAÇÃO DO FUNDO === */
 @keyframes fundoAnimado {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 #coracoes-bg {
@@ -111,6 +107,8 @@ html, body {
   padding-top: 1.08vw;
   text-align: center;
   will-change: font-weight, font-stretch, transform;
+  display: inline-block;
+  cursor: pointer;
 }
 
 .neon-btn {
@@ -125,12 +123,119 @@ html, body {
   text-align: center;
   align-self: center;
   display: block;
+  position: relative;
+  color: #03e9f4;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.5s;
+  letter-spacing: 4px;
+  overflow: hidden;
+  margin-right: 50px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  z-index: 1;
+}
+.neon-btn:hover {
+  background: #03e9f4;
+  color: #050801;
+  box-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 200px #03e9f4;
+  -webkit-box-reflect:below 1px linear-gradient(transparent, #0005);
+}
+.neon-btn span {
+  position: absolute;
+  display: block;
+}
+.neon-btn span:nth-child(1){
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,transparent,#03e9f4);
+  animation: animate1 1s linear infinite;
+}
+@keyframes animate1{
+  0%{ left: -100%; }
+  50%,100%{ left: 100%; }
+}
+.neon-btn span:nth-child(2){
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg,transparent,#03e9f4);
+  animation: animate2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+@keyframes animate2{
+  0%{ top: -100%; }
+  50%,100%{ top: 100%; }
+}
+.neon-btn span:nth-child(3){
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg,transparent,#03e9f4);
+  animation: animate3 1s linear infinite;
+  animation-delay: 0.50s;
+}
+@keyframes animate3{
+  0%{ right: -100%; }
+  50%,100%{ right: 100%; }
+}
+.neon-btn span:nth-child(4){
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg,transparent,#03e9f4);
+  animation: animate4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+@keyframes animate4{
+  0%{ bottom: -100%; }
+  50%,100%{ bottom: 100%; }
 }
 
 audio {
   display: none;
 }
 
+/* Corações animados */
+.coracao-rain {
+  position: absolute;
+  top: -30px;
+  will-change: transform, opacity;
+  animation: coracao-chuva linear forwards;
+  user-select: none;
+  filter: drop-shadow(0 2px 4px #0005);
+}
+@keyframes coracao-chuva {
+  0% { transform: translateY(0) scale(1) rotate(-10deg); opacity: 0.8; }
+  80% { opacity: 1; }
+  100% { transform: translateY(100vh) scale(0.9) rotate(10deg); opacity: 0.1; }
+}
+.coracao-random {
+  position: absolute;
+  will-change: transform, opacity;
+  animation: coracao-pop 4s linear forwards;
+  user-select: none;
+  filter: drop-shadow(0 1px 2px #0003);
+}
+@keyframes coracao-pop {
+  0% { opacity: 0; transform: scale(0.7) rotate(-10deg); }
+  10% { opacity: 1; transform: scale(1) rotate(0deg); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.7) rotate(10deg); }
+}
+
+/* Responsividade */
 @media (max-width: 900px) {
   .txt {
     font-size: 8vw;
@@ -198,8 +303,6 @@ audio {
     min-width: 90px;
   }
 }
-
-/* Responsividade para iPhones, iPads, Samsung, Poco, Motorola e outros smartphones/tablets */
 
 /* iPhones mais modernos e pequenos (ex: 375-430px largura) */
 @media (max-width: 450px) {
@@ -314,92 +417,6 @@ audio {
   max-width: 90vw;
   text-align: center;
   align-self: center;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
-
-.neon-btn {
-    position: relative;
-    display: inline-block;
-    padding: 25px 30px;
-    margin: 40px 0;
-    color: #03e9f4;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: 0.5s;
-    letter-spacing: 4px;
-    overflow: hidden;
-    margin-right: 50px;
-    font-family: 'Raleway', sans-serif;
-    font-weight: bold;
-    background: none;
-    border: none;
-    font-size: 1rem;
-    z-index: 1;
-}
-.neon-btn:hover {
-    background: #03e9f4;
-    color: #050801;
-    box-shadow: 0 0 5px #03e9f4,
-                0 0 25px #03e9f4,
-                0 0 50px #03e9f4,
-                0 0 200px #03e9f4;
-    -webkit-box-reflect:below 1px linear-gradient(transparent, #0005);
-}
-.neon-btn span {
-    position: absolute;
-    display: block;
-}
-.neon-btn span:nth-child(1){
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg,transparent,#03e9f4);
-    animation: animate1 1s linear infinite;
-}
-@keyframes animate1{
-    0%{ left: -100%; }
-    50%,100%{ left: 100%; }
-}
-.neon-btn span:nth-child(2){
-    top: -100%;
-    right: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(180deg,transparent,#03e9f4);
-    animation: animate2 1s linear infinite;
-    animation-delay: 0.25s;
-}
-@keyframes animate2{
-    0%{ top: -100%; }
-    50%,100%{ top: 100%; }
-}
-.neon-btn span:nth-child(3){
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(270deg,transparent,#03e9f4);
-    animation: animate3 1s linear infinite;
-    animation-delay: 0.50s;
-}
-@keyframes animate3{
-    0%{ right: -100%; }
-    50%,100%{ right: 100%; }
-}
-.neon-btn span:nth-child(4){
-    bottom: -100%;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(360deg,transparent,#03e9f4);
-    animation: animate4 1s linear infinite;
-    animation-delay: 0.75s;
-}
-@keyframes animate4{
-    0%{ bottom: -100%; }
-    50%,100%{ bottom: 100%; }
 }
 
 @media (max-width: 414px) {
