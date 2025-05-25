@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transição para Carrossel</title>
+  <link rel="stylesheet" href="css/style3.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Frase acima do disco/foto -->
+<div class="album-title" id="albumTitle">Nosso Album de memórias</div>
+
+<!-- Tela inicial -->
+<div class="vinyl-container" id="intro">
+  <img class="photo" id="photo" src="assets/amor2.jpg" alt="Foto de Teste" />
+  <img class="vinyl" id="introVinyl" src="data:image/svg+xml;utf8,
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+      <circle cx='100' cy='100' r='95' fill='black'/>
+      <circle cx='100' cy='100' r='70' fill='none' stroke='gray' stroke-width='1'/>
+      <circle cx='100' cy='100' r='50' fill='none' stroke='gray' stroke-width='1'/>
+      <circle cx='100' cy='100' r='30' fill='none' stroke='gray' stroke-width='1'/>
+      <circle cx='100' cy='100' r='10' fill='yellow'/>
+      <circle cx='100' cy='100' r='2' fill='black'/>
+    </svg>" alt="Disco de Vinil" />
+</div>
+
+<!-- Tela do carrossel -->
+<div class="carousel-view" id="carouselView">
+  <h1 class="headline destaque-sub" id="headline">O amor é eterno e as lembranças também</h1>
+
+  <button id="toggleMusic">
+    <span class="music-icon">🔊</span>
+    <span class="music-label">Tocar música</span>
+  </button>
+  <audio id="backgroundMusic" loop>
+    <source src="assets/Beach Weather - Sex, Drugs, Etc. (Official Video).mp3" type="audio/mp3" />
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <div class="carousel-layout">
+    <!-- Disco girando com imagem -->
+    <div class="rotating-vinyl" id="mainVinyl">
+      <div class="vinyl-center-img">
+        <img src="assets/musicafoto.avif" alt="Centro do Disco" />
+      </div>
+    </div>
+
+    <!-- Carrossel com efeito card -->
+    <div class="carousel" id="carouselExampleControls">
+      <div class="carousel-inner">
+        <div class="carousel-item active card-effect"><img src="assets/amor3.jpg" alt="Imagem 1" /></div>
+        <div class="carousel-item card-effect"><img src="assets/amor1.jpg" alt="Imagem 2" /></div>
+        <div class="carousel-item card-effect"><img src="assets/amor4.jpg" alt="Imagem 3" /></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Partículas -->
+<div id="particleField"></div>
+
+<script src="js/script3.js"></script>
+</body>
+</html>

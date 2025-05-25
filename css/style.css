@@ -1,0 +1,478 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* === ANIMAÇÃO DO FUNDO === */
+@keyframes fundoAnimado {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#coracoes-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background: linear-gradient(270deg, #101820, #1c1c1c, #101820);
+  background-size: 400% 400%;
+  animation: fundoAnimado 15s ease infinite;
+}
+
+/* === FIM DA ANIMAÇÃO DO FUNDO === */
+
+@font-face {
+  font-family: 'GT-Flexa';
+  src: url('https://assets.codepen.io/61488/GT-Flexa-VF-Trial.woff2');
+  font-display: block;
+  font-style: normal italic;
+  font-weight: 100 800;
+  font-stretch: 10% 200%;
+}
+
+:root {
+  --fw: 600; /* font weight target 100-800 */
+  --fs: 150;  /* font stretch target 10-150% */
+  --fontSize: 10; /* vw units */
+  --baseColor: #0082C9; /* Pantone 3 C */
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: white;
+  background-color: #101820;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 0;
+}
+
+.stage {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 0;
+}
+
+.txt {
+  margin: 0;
+  font-size: clamp(1.2rem, 5vw, 2.2rem);
+  font-weight: var(--fw);
+  font-stretch: calc(var(--fs) * 1%);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  user-select: none;
+  text-align: center;
+  white-space: normal;
+  overflow-x: visible;
+  text-overflow: unset;
+  max-width: 95vw;
+  text-shadow:
+    0 0.05em 0 #0082C9,
+    0 0.1em 0.1em rgba(70, 0, 35, 0.3),
+    0 0.4em 0.3em rgba(70, 0, 35, 0.1);
+}
+
+#neonBtn, #neonBtn.visible, .txt.visible {
+  opacity: 1 !important;
+  transform: none !important;
+  display: inline-block !important;
+}
+
+.char {
+  padding-top: 1.08vw;
+  text-align: center;
+  will-change: font-weight, font-stretch, transform;
+}
+
+.neon-btn {
+  margin: 1.2rem auto 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 24px 0 #03e9f433;
+  font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+  padding: 0.7em 1.5em;
+  width: fit-content;
+  min-width: 90px;
+  max-width: 90vw;
+  text-align: center;
+  align-self: center;
+  display: block;
+}
+
+audio {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .txt {
+    font-size: 8vw;
+    letter-spacing: -0.5vw;
+    line-height: 0.8;
+    padding: 0 2vw;
+    word-break: break-word;
+  }
+  .char {
+    padding-top: 1.5vw;
+  }
+  .content {
+    padding: 0 2vw;
+  }
+}
+
+@media (max-width: 600px) {
+  html, body {
+    font-size: 16px;
+    padding: 0;
+    min-height: 100vh;
+  }
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0;
+  }
+  .txt {
+    font-size: clamp(1rem, 6vw, 1.5rem);
+    max-width: 98vw;
+    white-space: normal;
+    overflow-x: visible;
+    text-overflow: unset;
+    text-align: center;
+  }
+  .neon-btn {
+    font-size: clamp(0.8rem, 4vw, 1rem);
+    padding: 0.6em 1em;
+    min-width: 70px;
+    max-width: 95vw;
+  }
+  .char {
+    padding-top: 2vw;
+  }
+  .neon-btn {
+    padding: 16px 10px;
+    font-size: 1rem;
+    margin-right: 0;
+    width: 90vw;
+    text-align: center;
+  }
+  .content {
+    padding: 0 2vw;
+  }
+}
+
+@media (max-width: 400px) {
+  .txt {
+    font-size: clamp(1.1rem, 13vw, 2.2rem);
+  }
+  .neon-btn {
+    font-size: clamp(0.8rem, 6vw, 1rem);
+    padding: 0.7em 0.8em;
+    min-width: 90px;
+  }
+}
+
+/* Responsividade para iPhones, iPads, Samsung, Poco, Motorola e outros smartphones/tablets */
+
+/* iPhones mais modernos e pequenos (ex: 375-430px largura) */
+@media (max-width: 450px) {
+  .txt {
+    font-size: 12vw;
+    letter-spacing: -0.2vw;
+    line-height: 1;
+    padding: 0 2vw;
+  }
+  .neon-btn {
+    font-size: 0.95rem;
+    padding: 12px 5px;
+    width: 90vw;
+  }
+}
+
+/* iPhones Plus, Max, XR, 11, 12, 13, 14, 15, 16, etc. (414-440px largura) */
+@media (min-width: 414px) and (max-width: 480px) {
+  .txt {
+    font-size: 10vw;
+    letter-spacing: -0.2vw;
+    line-height: 1;
+    padding: 0 2vw;
+  }
+  .neon-btn {
+    font-size: 1.05rem;
+    padding: 14px 8px;
+    width: 85vw;
+  }
+}
+
+/* iPads e tablets (largura 744px até 1024px) */
+@media (min-width: 600px) and (max-width: 1100px) {
+  .txt {
+    font-size: 6vw;
+    letter-spacing: -0.1vw;
+    line-height: 1.1;
+    padding: 0 4vw;
+  }
+  .neon-btn {
+    font-size: 1.2rem;
+    padding: 18px 16px;
+    width: 60vw;
+  }
+  .content {
+    padding: 0 4vw;
+  }
+}
+
+/* iPad Pro 12.9, Air 13, tablets grandes (largura 1024px+) */
+@media (min-width: 1024px) and (max-width: 1400px) {
+  .txt {
+    font-size: 5vw;
+    letter-spacing: -0.1vw;
+    line-height: 1.1;
+    padding: 0 6vw;
+  }
+  .neon-btn {
+    font-size: 1.3rem;
+    padding: 22px 20px;
+    width: 50vw;
+  }
+  .content {
+    padding: 0 6vw;
+  }
+}
+
+/* Androids grandes, tablets Samsung, Poco, Motorola, etc. (largura 480px até 800px) */
+@media (min-width: 480px) and (max-width: 900px) {
+  .txt {
+    font-size: 8vw;
+    letter-spacing: -0.2vw;
+    line-height: 1.1;
+    padding: 0 3vw;
+  }
+  .neon-btn {
+    font-size: 1.1rem;
+    padding: 16px 12px;
+    width: 80vw;
+  }
+  .content {
+    padding: 0 3vw;
+  }
+}
+
+/* Ajuste geral para garantir centralização e espaçamento bonito em todos os dispositivos */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 100vw;
+}
+.stage {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neon-btn {
+  margin-top: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 24px 0 #03e9f433;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  padding: 1em 2em;
+  width: auto;
+  min-width: 180px;
+  max-width: 90vw;
+  text-align: center;
+  align-self: center;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+.neon-btn {
+    position: relative;
+    display: inline-block;
+    padding: 25px 30px;
+    margin: 40px 0;
+    color: #03e9f4;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    margin-right: 50px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    z-index: 1;
+}
+.neon-btn:hover {
+    background: #03e9f4;
+    color: #050801;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px #03e9f4;
+    -webkit-box-reflect:below 1px linear-gradient(transparent, #0005);
+}
+.neon-btn span {
+    position: absolute;
+    display: block;
+}
+.neon-btn span:nth-child(1){
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,transparent,#03e9f4);
+    animation: animate1 1s linear infinite;
+}
+@keyframes animate1{
+    0%{ left: -100%; }
+    50%,100%{ left: 100%; }
+}
+.neon-btn span:nth-child(2){
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg,transparent,#03e9f4);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+@keyframes animate2{
+    0%{ top: -100%; }
+    50%,100%{ top: 100%; }
+}
+.neon-btn span:nth-child(3){
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg,transparent,#03e9f4);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.50s;
+}
+@keyframes animate3{
+    0%{ right: -100%; }
+    50%,100%{ right: 100%; }
+}
+.neon-btn span:nth-child(4){
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg,transparent,#03e9f4);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+@keyframes animate4{
+    0%{ bottom: -100%; }
+    50%,100%{ bottom: 100%; }
+}
+
+@media (max-width: 414px) {
+  .txt {
+    font-size: clamp(1.1rem, 5vw, 2.2rem);
+    letter-spacing: 0;
+    text-align: center;
+  }
+  .neon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0 auto;
+    width: fit-content;
+    min-width: 90px;
+    max-width: 95vw;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 0;
+}
+
+.neon-btn {
+  margin: 2rem auto 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 120px;
+  max-width: 90vw;
+  text-align: center;
+}
+
+#coracoes-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.coracao-rain {
+  position: absolute;
+  top: -30px;
+  will-change: transform, opacity;
+  animation: coracao-chuva linear forwards;
+  user-select: none;
+  filter: drop-shadow(0 2px 4px #0005);
+}
+@keyframes coracao-chuva {
+  0% { transform: translateY(0) scale(1) rotate(-10deg); opacity: 0.8; }
+  80% { opacity: 1; }
+  100% { transform: translateY(100vh) scale(0.9) rotate(10deg); opacity: 0.1; }
+}
+.coracao-random {
+  position: absolute;
+  will-change: transform, opacity;
+  animation: coracao-pop 4s linear forwards;
+  user-select: none;
+  filter: drop-shadow(0 1px 2px #0003);
+}
+@keyframes coracao-pop {
+  0% { opacity: 0; transform: scale(0.7) rotate(-10deg); }
+  10% { opacity: 1; transform: scale(1) rotate(0deg); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.7) rotate(10deg); }
+}

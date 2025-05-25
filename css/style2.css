@@ -1,0 +1,687 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+
+@layer normalize, base, demo, stick, effect, scrollbar, debug;
+
+@layer debug {
+  [data-debug='true'] li {
+    outline: 0.05em dashed currentColor;
+  }
+  [data-debug='true'] :is(h2, li:last-of-type) {
+    outline: 0.05em dashed #fff;
+  }
+}
+
+@layer scrollbar {
+  @property --hue {
+    initial-value: 0;
+    syntax: '<number>';
+    inherits: false;
+  }
+  @property --chroma {
+    initial-value: 0;
+    syntax: '<number>';
+    inherits: true;
+  }
+
+  [data-sync-scrollbar='true'] {
+    scrollbar-color: oklch(var(--lightness) var(--chroma) var(--hue)) #0000;
+  }
+  @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
+    [data-sync-scrollbar='true'][data-animate='true'] {
+      timeline-scope: --list;
+      scrollbar-color: oklch(var(--lightness) var(--chroma, 0) var(--hue)) #0000;
+      animation-name: change, chroma-on, chroma-off;
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+      animation-range: entry 50% exit 50%, entry 40% entry 50%,
+        exit 30% exit 40%;
+      animation-timeline: --list;
+      ul {
+        view-timeline: --list;
+      }
+    }
+  }
+
+  @keyframes change {
+    to {
+      --hue: var(--end);
+    }
+  }
+  @keyframes chroma-on {
+    to {
+      --chroma: 0.3;
+    }
+  }
+  @keyframes chroma-off {
+    to {
+      --chroma: 0;
+    }
+  }
+}
+
+@layer effect {
+  :root {
+    --start: 0;
+    --end: 360;
+    --lightness: 65%;
+    --base-chroma: 0.3;
+  }
+  [data-theme='dark'] {
+    --lightness: 75%;
+  }
+  [data-theme='light'] {
+    --lightness: 65%;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --lightness: 75%;
+    }
+  }
+  ul {
+    --step: calc((var(--end) - var(--start)) / (var(--count) - 1));
+  }
+  li:not(:last-of-type) {
+    color: oklch(
+      var(--lightness) var(--base-chroma)
+        calc(var(--start) + (var(--step) * var(--i)))
+    );
+  }
+
+  @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
+    [data-animate='true'] li {
+      opacity: 0.2;
+      animation-name: brighten;
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+      animation-range: cover calc(50% - 1lh) calc(50% + 1lh);
+      animation-timeline: view();
+    }
+    @keyframes brighten {
+      0% {
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 1;
+        filter: brightness(1.2);
+      }
+      100% {
+        opacity: 0.2;
+      }
+    }
+  }
+}
+
+/* REMOVIDO: Fallback que forçava opacidade 1 no mobile para navegadores sem suporte
+@media (max-width: 700px) {
+  @supports not (animation-timeline: scroll()) {
+    [data-animate='true'] li {
+      opacity: 1 !important;
+      filter: none !important;
+      animation: none !important;
+      transition: color 0.3s;
+    }
+  }
+}
+*/
+
+/* BACKGROUND PRETO COM GRADES BRANCAS */
+body {
+  display: grid;
+  place-items: center;
+  background: #111;
+  min-height: 100vh;
+  font-family: 'Geist', 'SF Pro Text', 'SF Pro Icons', 'AOS Icons',
+    'Helvetica Neue', Helvetica, Arial, sans-serif, system-ui;
+  color: #fff;
+  position: relative;
+}
+body::before {
+  --size: 45px;
+  --line: rgba(255,255,255,0.08);
+  content: '';
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: 
+    linear-gradient(90deg, var(--line) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size),
+    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size);
+  mask: linear-gradient(-20deg, transparent 50%, white);
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* FINAL SECTION: só aparece quando .visible, nunca esconde gif, botão ou contador */
+#final-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  margin-top: 3rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+#final-section.visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+#final-section .contador,
+#final-section img,
+#final-section .big-gif,
+#final-section .neon-btn {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Mantém gradientes e efeitos de texto para desktop, mas usa fallback no mobile */
+@layer stick {
+  section:first-of-type {
+    --font-level: 6;
+    display: flex;
+    line-height: 1.25;
+    width: 100%;
+    padding-left: 5rem;
+  }
+  section:last-of-type {
+    min-height: 100vh;
+    display: flex;
+    place-items: center;
+    width: 100%;
+    justify-content: center;
+
+    h2 {
+      --font-level: 6;
+    }
+  }
+  main {
+    width: 100%;
+  }
+  section:first-of-type h2 {
+    position: sticky;
+    top: calc(50% - 0.5lh);
+    font-size: inherit;
+    margin: 0;
+    display: inline-block;
+    height: fit-content;
+    font-weight: 600;
+  }
+  ul {
+    font-weight: 600;
+    padding-inline: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  [data-snap='true'] {
+    scroll-snap-type: y proximity;
+
+    li {
+      scroll-snap-align: center;
+    }
+  }
+
+  h2,
+  li:last-of-type {
+    background: linear-gradient(
+      #fff 50%,
+      #b3b3b3 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: #0000;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+  }
+}
+
+/* Fallback para gradiente de texto em mobile */
+@media (max-width: 700px) {
+  h2,
+  li:last-of-type,
+  .destaque-titulo,
+  .destaque-sub {
+    background: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    text-fill-color: #fff !important;
+  }
+}
+
+@layer demo {
+  header {
+    min-height: 100vh;
+    display: flex;
+    place-items: center;
+    width: 100%;
+    padding-inline: 5rem;
+  }
+
+  footer {
+    padding-block: 2rem;
+    opacity: 0.5;
+  }
+
+  h1 {
+    --font-size-min: 24;
+    --font-level: 8;
+    text-wrap: pretty;
+    line-height: 0.8;
+    margin: 0;
+    background: linear-gradient(
+      #fff 60%,
+      #b3b3b3 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: #0000;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+  }
+}
+
+@media (max-width: 700px) {
+  h1 {
+    background: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    text-fill-color: #fff !important;
+  }
+}
+
+@layer base {
+  :root {
+    --font-size-min: 14;
+    --font-size-max: 20;
+    --font-ratio-min: 1.1;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) / 
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) - 
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  .bear-link {
+    color: #fff;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .destaque-titulo {
+    font-size: 3.5em;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-weight: 900;
+    text-align: center;
+    margin: 0.1em 0 0.1em 0;
+    letter-spacing: 2px;
+    color: #fff;
+    line-height: 1.05;
+  }
+  .destaque-sub {
+    font-size: 2.8em;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    text-align: center;
+    margin: 0.2em 0 0.5em 0;
+    color: #fff;
+    letter-spacing: 1.5px;
+  }
+  .qualidades-lista {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+  }
+  .qualidades-lista li {
+    font-size: 2.8em;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1.5px;
+    margin: 0.1em 0;
+    text-align: center;
+    transition: color 0.3s;
+  }
+  @media (max-width: 1200px) {
+    .destaque-sub { font-size: 2.2em; }
+    .qualidades-lista li { font-size: 2.2em; }
+  }
+  @media (max-width: 900px) {
+    .destaque-sub { font-size: 1.7em; }
+    .qualidades-lista li { font-size: 1.7em; }
+  }
+  @media (max-width: 600px) {
+    .destaque-sub { font-size: 1.2em; }
+    .qualidades-lista li { font-size: 1.2em; }
+  }
+  .contador {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+  }
+  .contador p {
+    margin: 0.2em 0;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+  #tempo {
+    font-family: 'Geist', 'Bebas Neue', Arial, sans-serif;
+    font-size: 1.3em;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-top: 0.3em;
+    font-weight: 700;
+  }
+}
+
+div.tp-dfwv {
+  position: fixed;
+}
+
+@media (max-width: 480px) {
+  html,
+  body {
+    font-size: 14px;
+  }
+  .fluid,
+  h1,
+  h2,
+  h3 {
+    font-size: 2rem !important;
+  }
+  .contador {
+    font-size: 1.1rem;
+    padding: 0 0.5em;
+  }
+  #tempo {
+    font-size: 1.2em;
+  }
+  img,
+  .big-gif {
+    max-width: 90vw !important;
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  html,
+  body {
+    font-size: 15px;
+  }
+  .fluid,
+  h1,
+  h2,
+  h3 {
+    font-size: 2.5rem !important;
+  }
+  .contador {
+    font-size: 1.2rem;
+  }
+  #tempo {
+    font-size: 1.4em;
+  }
+  img,
+  .big-gif {
+    max-width: 80vw !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  html,
+  body {
+    font-size: 16px;
+  }
+  .fluid,
+  h1,
+  h2,
+  h3 {
+    font-size: 3rem !important;
+  }
+  .contador {
+    font-size: 1.3rem;
+  }
+  #tempo {
+    font-size: 1.6em;
+  }
+  img,
+  .big-gif {
+    max-width: 60vw !important;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+  html,
+  body {
+    font-size: 17px;
+  }
+  .fluid,
+  h1,
+  h2,
+  h3 {
+    font-size: 3.5rem !important;
+  }
+  .contador {
+    font-size: 1.4rem;
+  }
+  #tempo {
+    font-size: 1.8em;
+  }
+  img,
+  .big-gif {
+    max-width: 50vw !important;
+  }
+}
+
+@media (min-width: 1201px) {
+  html,
+  body {
+    font-size: 18px;
+  }
+  .fluid,
+  h1,
+  h2,
+  h3 {
+    font-size: 4rem !important;
+  }
+  .contador {
+    font-size: 1.5rem;
+  }
+  #tempo {
+    font-size: 2em;
+  }
+  img,
+  .big-gif {
+    max-width: 40vw !important;
+  }
+}
+
+/* === Botão NEON (GRANDE FINAL) === */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+.neon-btn {
+    position: relative;
+    display: inline-block;
+    padding: 25px 30px;
+    margin: 40px 0;
+    color: #03e9f4;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 4px;
+    overflow: hidden;
+    margin-right: 50px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    z-index: 1;
+}
+.neon-btn:hover {
+    background: #03e9f4;
+    color: #050801;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px #03e9f4;
+    -webkit-box-reflect:below 1px linear-gradient(transparent, #0005);
+}
+.neon-btn span {
+    position: absolute;
+    display: block;
+}
+.neon-btn span:nth-child(1){
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,transparent,#03e9f4);
+    animation: animate1 1s linear infinite;
+}
+@keyframes animate1{
+    0%{ left: -100%; }
+    50%,100%{ left: 100%; }
+}
+.neon-btn span:nth-child(2){
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg,transparent,#03e9f4);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+@keyframes animate2{
+    0%{ top: -100%; }
+    50%,100%{ top: 100%; }
+}
+.neon-btn span:nth-child(3){
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg,transparent,#03e9f4);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.50s;
+}
+@keyframes animate3{
+    0%{ right: -100%; }
+    50%,100%{ right: 100%; }
+}
+.neon-btn span:nth-child(4){
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg,transparent,#03e9f4);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+@keyframes animate4{
+    0%{ bottom: -100%; }
+    50%,100%{ bottom: 100%; }
+}
+
+@media (max-width: 414px) {
+  .neon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0 auto;
+    width: fit-content;
+    min-width: 90px;
+    max-width: 95vw;
+  }
+}
+
+.neon-btn {
+  margin: 2rem auto 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 120px;
+  max-width: 90vw;
+  text-align: center;
+}

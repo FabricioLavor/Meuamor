@@ -1,0 +1,599 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Esconde barras de rolagem */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fundo geral */
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.1) 2px, transparent 2px),
+    linear-gradient(to bottom, rgba(255,255,255,0.1) 2px, transparent 2px),
+    linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,1));
+  background-size: 80px 80px, 80px 80px, 100%;
+  background-repeat: repeat, repeat, no-repeat;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Título do álbum */
+.album-title {
+  font-family: 'Press Start 2P', cursive;
+  color: #fff;
+  font-size: 2.5vw;
+  text-align: center;
+  margin-top: 2vw;
+  margin-bottom: 2vw;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #000, 0 0 2px #e81cff;
+  word-break: break-word;
+  max-width: 95vw;
+  transition: opacity 0.4s;
+}
+
+/* Tela inicial - disco atrás da foto */
+.vinyl-container {
+  position: relative;
+  width: 38vw;
+  height: 38vw;
+  max-width: 420px;
+  max-height: 420px;
+  min-width: 180px;
+  min-height: 180px;
+  margin: 0 auto;
+  display: block;
+  box-sizing: border-box;
+}
+
+.photo {
+  width: 35vw;
+  height: 35vw;
+  max-width: 380px;
+  max-height: 380px;
+  min-width: 150px;
+  min-height: 150px;
+  object-fit: cover;
+  border-radius: 2vw;
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  top: 1.5vw;
+  box-shadow: 0 0 40px #000a;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+}
+
+.vinyl {
+  width: 38vw;
+  height: 38vw;
+  max-width: 420px;
+  max-height: 420px;
+  min-width: 180px;
+  min-height: 180px;
+  position: absolute;
+  left: 22vw;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: left 1.5s cubic-bezier(.4,2,.6,1), filter 0.5s;
+  filter: brightness(0.9) blur(0.5px);
+}
+
+.vinyl-container.show-vinyl .vinyl {
+  left: 0;
+  filter: brightness(1.1) blur(0);
+}
+
+/* Tela do carrossel */
+.carousel-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vw;
+  padding: 2vw;
+  animation: fadeIn 1s ease forwards;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Frase brilhando só em branco */
+.destaque-sub {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 4vw;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 16px #fff, 0 1px 0 #fff, 0 2px 0 #aaa;
+  text-align: center;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  animation: shineWhite 2s linear infinite;
+  margin: 0 0 2vw 0;
+  word-break: break-word;
+  max-width: 95vw;
+}
+
+@keyframes shineWhite {
+  0% { text-shadow: 0 0 10px #fff, 0 1px 0 #fff; }
+  50% { text-shadow: 0 0 30px #fff, 0 1px 0 #fff; }
+  100% { text-shadow: 0 0 10px #fff, 0 1px 0 #fff; }
+}
+
+/* Botão de som bonito */
+#toggleMusic {
+  background: linear-gradient(90deg, #e81cff 0%, #40c9ff 100%);
+  color: #fff;
+  padding: 1.2vw 3vw;
+  border-radius: 3vw;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 2vw;
+  font-size: 2vw;
+  font-family: 'Press Start 2P', cursive;
+  box-shadow: 0 4px 32px #e81cff44;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  justify-content: center;
+}
+#toggleMusic:hover, #toggleMusic:focus {
+  background: linear-gradient(90deg, #40c9ff 0%, #e81cff 100%);
+  box-shadow: 0 8px 40px #40c9ff55;
+  transform: scale(1.07);
+}
+.music-icon {
+  font-size: 2vw;
+  display: flex;
+  align-items: center;
+}
+.music-label {
+  font-size: 1.2vw;
+  letter-spacing: 1px;
+}
+
+/* Layout do carrossel */
+.carousel-layout {
+  display: flex;
+  gap: 4vw;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100vw;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  flex-direction: row;
+}
+.carousel-layout > * {
+  flex-shrink: 0;
+}
+
+/* Disco girando com efeito vinil realista */
+.rotating-vinyl {
+  width: 20vw;
+  height: 20vw;
+  max-width: 300px;
+  max-height: 300px;
+  min-width: 90px;
+  min-height: 90px;
+  border-radius: 50%;
+  background: #181818;
+  position: relative;
+  box-shadow: 0 0 24px 4px var(--c1, #e81cff)80;
+  transition: box-shadow 0.3s, background 0.6s;
+  overflow: visible;
+}
+
+/* Sulcos do vinil */
+.rotating-vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0px,
+      transparent 7px,
+      #fff2 8px,
+      transparent 9px,
+      transparent 13px,
+      #fff1 14px,
+      transparent 15px,
+      transparent 19px,
+      #fff1 20px,
+      transparent 21px,
+      transparent 25px,
+      #fff1 26px,
+      transparent 27px,
+      transparent 31px,
+      #fff1 32px,
+      transparent 33px,
+      transparent 37px,
+      #fff1 38px,
+      transparent 39px,
+      transparent 43px,
+      #fff1 44px,
+      transparent 45px,
+      transparent 49px,
+      #fff1 50px,
+      transparent 51px,
+      transparent 55px,
+      #fff1 56px,
+      transparent 57px,
+      transparent 61px,
+      #fff1 62px,
+      transparent 63px,
+      transparent 67px,
+      #fff1 68px,
+      transparent 69px,
+      transparent 73px,
+      #fff1 74px,
+      transparent 75px,
+      transparent 79px,
+      #fff1 80px,
+      transparent 81px,
+      transparent 85px,
+      #fff1 86px,
+      transparent 87px,
+      transparent 91px,
+      #fff1 92px,
+      transparent 93px,
+      transparent 97px,
+      #fff1 98px,
+      transparent 99px,
+      transparent 120px
+    );
+}
+
+/* Centro do disco (círculo amarelo) */
+.rotating-vinyl::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe066 60%, #fff 100%);
+  z-index: 2;
+  box-shadow: 0 0 10px #ffe06688;
+}
+
+/* Foto centralizada no disco */
+.vinyl-center-img {
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  border: 4px solid #222;
+  box-shadow: 0 0 8px #000a;
+}
+
+.vinyl-center-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Animação de rotação */
+.rotating-vinyl.spin {
+  animation: spin 4s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Carrossel */
+.carousel {
+  width: 40vw;
+  max-width: 350px;
+  min-width: 180px;
+  overflow: visible;
+  position: relative;
+  margin: 0 auto;
+}
+
+.carousel-inner {
+  width: 100%;
+  min-width: 0;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  display: none;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.carousel-item.active {
+  display: block;
+}
+
+/* Efeito brilhante */
+.card-effect {
+  position: relative;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 1;
+}
+
+.card-effect::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(-45deg, var(--c1, #e81cff), var(--c2, #40c9ff));
+  z-index: -2;
+  pointer-events: none;
+  transition: all 0.6s ease;
+}
+
+.card-effect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, var(--c3, #fc00ff), var(--c4, #00dbde));
+  transform: scale(0.95);
+  filter: blur(20px);
+  z-index: -3;
+  transition: all 0.6s ease;
+}
+
+.card-effect:hover::before {
+  transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+}
+
+.card-effect:hover::after {
+  filter: blur(30px);
+}
+
+.carousel-item img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Fade da tela */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Telas grandes: notebooks, monitores 21" a 34" */
+@media (min-width: 1400px) {
+  .vinyl-container {
+    width: 28vw;
+    height: 28vw;
+    max-width: 600px;
+    max-height: 600px;
+  }
+  .photo {
+    width: 25vw;
+    height: 25vw;
+    max-width: 540px;
+    max-height: 540px;
+    top: 2vw;
+    border-radius: 1vw;
+  }
+  .vinyl {
+    width: 28vw;
+    height: 28vw;
+    max-width: 600px;
+    max-height: 600px;
+    left: 16vw;
+  }
+  .rotating-vinyl {
+    width: 18vw;
+    height: 18vw;
+    max-width: 400px;
+    max-height: 400px;
+  }
+  .carousel {
+    width: 28vw;
+    max-width: 500px;
+    min-width: 200px;
+  }
+}
+
+/* Tablets e celulares grandes */
+@media (max-width: 900px) {
+  .carousel-layout {
+    flex-direction: column;
+    gap: 5vw;
+    align-items: center;
+    justify-content: center;
+    max-width: 98vw;
+  }
+  .vinyl-container {
+    width: 70vw;
+    height: 70vw;
+    max-width: 400px;
+    max-height: 400px;
+  }
+  .photo, .vinyl {
+    width: 66vw;
+    height: 66vw;
+    max-width: 360px;
+    max-height: 360px;
+  }
+  .vinyl {
+    left: 36vw;
+  }
+  .rotating-vinyl {
+    width: 24vw;
+    height: 24vw;
+    max-width: 200px;
+    max-height: 200px;
+  }
+  .carousel {
+    width: 70vw;
+    max-width: 400px;
+    min-width: 160px;
+  }
+}
+
+/* Celulares modernos (iPhone, Galaxy, Xiaomi, Motorola, Nokia, etc) */
+@media (max-width: 600px) {
+  .album-title {
+    font-size: 4vw;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+    padding: 0 2vw;
+  }
+  .destaque-sub {
+    font-size: 6vw;
+    margin-bottom: 2vw;
+    padding: 0 2vw;
+  }
+  .vinyl-container {
+    width: 92vw;
+    height: 92vw;
+    max-width: 340px;
+    max-height: 340px;
+  }
+  .photo, .vinyl {
+    width: 88vw;
+    height: 88vw;
+    max-width: 320px;
+    max-height: 320px;
+    left: 0;
+    top: 2vw;
+  }
+  .vinyl {
+    left: 54vw;
+  }
+  .vinyl-container.show-vinyl .vinyl {
+    left: 0;
+  }
+  .rotating-vinyl {
+    width: 38vw;
+    height: 38vw;
+    max-width: 120px;
+    max-height: 120px;
+    margin-bottom: 2vw;
+  }
+  .vinyl-center-img {
+    width: 40%;
+    height: 40%;
+  }
+  .carousel {
+    width: 92vw;
+    max-width: 340px;
+    min-width: 120px;
+  }
+}
+
+/* Celulares compactos (iPhone SE, Galaxy A, Moto E, Redmi, etc) */
+@media (max-width: 430px) {
+  .vinyl-container {
+    width: 99vw;
+    height: 99vw;
+    max-width: 200px;
+    max-height: 200px;
+  }
+  .photo, .vinyl {
+    width: 97vw;
+    height: 97vw;
+    max-width: 180px;
+    max-height: 180px;
+    left: 0;
+    top: 2vw;
+  }
+  .vinyl {
+    left: 60vw;
+  }
+  .vinyl-container.show-vinyl .vinyl {
+    left: 0;
+  }
+  .rotating-vinyl {
+    width: 60vw;
+    height: 60vw;
+    max-width: 90px;
+    max-height: 90px;
+    margin-bottom: 2vw;
+  }
+  .vinyl-center-img {
+    width: 50%;
+    height: 50%;
+  }
+  .carousel {
+    width: 99vw;
+    max-width: 200px;
+    min-width: 80px;
+  }
+}
+
+/* Celulares ultra compactos */
+@media (max-width: 350px) {
+  .vinyl-container {
+    width: 100vw;
+    height: 100vw;
+    max-width: 140px;
+    max-height: 140px;
+  }
+  .photo, .vinyl {
+    width: 99vw;
+    height: 99vw;
+    max-width: 120px;
+    max-height: 120px;
+    left: 0;
+    top: 1vw;
+  }
+  .vinyl {
+    left: 65vw;
+  }
+  .vinyl-container.show-vinyl .vinyl {
+    left: 0;
+  }
+  .rotating-vinyl {
+    width: 80vw;
+    height: 80vw;
+    max-width: 60px;
+    max-height: 60px;
+    margin-bottom: 1vw;
+  }
+  .vinyl-center-img {
+    width: 60%;
+    height: 60%;
+  }
+  .carousel {
+    width: 100vw;
+    max-width: 120px;
+    min-width: 60px;
+  }
+}
